@@ -14,14 +14,29 @@ export async function fetchRevenue() {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const data = await sql<Revenue>`SELECT * FROM revenue`;
+    // const data = await sql<Revenue>`SELECT * FROM revenue`;
 
-    // console.log('Data fetch completed after 3 seconds.');
+    const data = [
+      { month: 'Jan', revenue: 1000 },
+      { month: 'Feb', revenue: 2000 },
+      { month: 'Mar', revenue: 3000 },
+      { month: 'Apr', revenue: 4000 },
+      { month: 'May', revenue: 5000 },
+      { month: 'Jun', revenue: 6000 },
+      { month: 'Jul', revenue: 7000 },
+      { month: 'Aug', revenue: 8000 },
+      { month: 'Sep', revenue: 9000 },
+      { month: 'Oct', revenue: 10000 },
+      { month: 'Nov', revenue: 11000 },
+      { month: 'Dec', revenue: 12000 },
+    ]
 
-    return data.rows;
+    console.log('Data fetch completed after 3 seconds.');
+
+    return data;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch revenue data.');
@@ -49,27 +64,31 @@ export async function fetchLatestInvoices() {
 }
 
 export async function fetchCardData() {
-  try {
+  //try {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+    // const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
+    // const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
+    // const invoiceStatusPromise = sql`SELECT
+    //      SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
+    //      SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
+    //      FROM invoices`;
 
-    const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
-      invoiceStatusPromise,
-    ]);
+    // const data = await Promise.all([
+    //   invoiceCountPromise,
+    //   customerCountPromise,
+    //   invoiceStatusPromise,
+    // ]);
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    // const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
+    // const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
+    // const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
+    // const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    const numberOfInvoices = 135;
+    const numberOfCustomers = 32;
+    const totalPaidInvoices = formatCurrency(36);
+    const totalPendingInvoices = formatCurrency(99);
 
     return {
       numberOfCustomers,
@@ -77,10 +96,10 @@ export async function fetchCardData() {
       totalPaidInvoices,
       totalPendingInvoices,
     };
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch card data.');
-  }
+  // } catch (error) {
+  //   console.error('Database Error:', error);
+  //   throw new Error('Failed to fetch card data.');
+  // }
 }
 
 const ITEMS_PER_PAGE = 6;
