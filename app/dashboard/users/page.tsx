@@ -17,10 +17,10 @@ type Response = {
 }
 
 export default async function Page(){
-    let response = await endpoints.getUsers();
+    //let response = await endpoints.getUsers();
 
-    response.data as Response;
-    let username = response.data.items[5].username;
+    //response.data as Response;
+    //let username = response.data.items[5].username;
 
-    return <p>{username}</p>
+    return <p>{'username'}</p>
 }
